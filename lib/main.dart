@@ -49,24 +49,43 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  String title = 'Tap the screen';
+  ValueKey _textKey = const ValueKey<String?>(null);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(ApiProvider.of(context).api.dateAndTime ?? ''),
       ),
       body: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          final api = ApiProvider.of(context).api;
+          final dateTime = await api.getDateAndTime();
           setState(() {
-            title = DateTime.now().toIso8601String();
+            _textKey = ValueKey(dateTime);
           });
         },
-        child: Container(
-          color: Theme.of(context).colorScheme.primary,
+        child: SizedBox.expand(
+          child: Container(
+            color: Theme.of(context).colorScheme.primary,
+            child: TimeDate(key: _textKey),
+          ),
         ),
       ),
+    );
+  }
+}
+
+class TimeDate extends StatelessWidget {
+  const TimeDate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final api = ApiProvider.of(context).api;
+    return Column(
+      children: [
+        Text(api.dateAndTime ?? "Tap screen"),
+      ],
     );
   }
 }
