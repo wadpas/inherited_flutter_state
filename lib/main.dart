@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'dart:math' show Random;
 
 void main() {
   runApp(
@@ -7,38 +7,13 @@ void main() {
       title: 'Inherited Widget',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightBlue,
+          seedColor: Colors.deepPurple,
         ),
         useMaterial3: true,
       ),
-      home: ApiProvider(
-        api: Api(),
-        child: const HomeView(),
-      ),
-      routes: {},
+      home: const HomeView(),
     ),
   );
-}
-
-class ApiProvider extends InheritedWidget {
-  final Api api;
-  final String uuid;
-
-  ApiProvider({
-    Key? key,
-    required this.api,
-    required Widget child,
-  })  : uuid = const Uuid().v4(),
-        super(key: key, child: child);
-
-  @override
-  bool updateShouldNotify(covariant ApiProvider oldWidget) {
-    return uuid != oldWidget.uuid;
-  }
-
-  static ApiProvider of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ApiProvider>()!;
-  }
 }
 
 class HomeView extends StatefulWidget {
@@ -49,57 +24,70 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  ValueKey _textKey = const ValueKey<String?>(null);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(ApiProvider.of(context).api.dateAndTime ?? ''),
+        title: const Text('Inherited Model'),
       ),
-      body: GestureDetector(
-        onTap: () async {
-          final api = ApiProvider.of(context).api;
-          final dateTime = await api.getDateAndTime();
-          setState(() {
-            _textKey = ValueKey(dateTime);
-          });
-        },
-        child: SizedBox.expand(
-          child: Container(
-            color: Theme.of(context).colorScheme.primary,
-            child: TimeDate(key: _textKey),
-          ),
+      body: SizedBox.expand(
+        child: Container(
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );
   }
 }
 
-class TimeDate extends StatelessWidget {
-  const TimeDate({super.key});
+enum AvailableColors { one, two }
+
+class AvailableColorsWidget extends InheritedModel<AvailableColors> {
+  final AvailableColors color1;
+  final AvailableColors color2;
+
+  const AvailableColorsWidget({
+    Key? key,
+    required this.color1,
+    required this.color2,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  static AvailableColorsWidget of(
+      BuildContext context, AvailableColors aspect) {
+    return InheritedModel.inheritFrom<AvailableColorsWidget>(
+      context,
+      aspect: aspect,
+    )!;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    final api = ApiProvider.of(context).api;
-    return Column(
-      children: [
-        Text(api.dateAndTime ?? "Tap screen"),
-      ],
-    );
+  bool updateShouldNotify(covariant AvailableColorsWidget oldWidget) {
+    return color1 != oldWidget.color1 || color2 != oldWidget.color2;
+  }
+
+  @override
+  bool updateShouldNotifyDependent(
+      covariant InheritedModel<AvailableColors> oldWidget,
+      Set<AvailableColors> dependencies) {
+    // TODO: implement updateShouldNotifyDependent
+    throw UnimplementedError();
   }
 }
 
-class Api {
-  String? dateAndTime;
+final colors = [
+  Colors.amber,
+  Colors.blue,
+  Colors.red,
+  Colors.brown,
+  Colors.indigo,
+  Colors.pink,
+  Colors.lime
+];
 
-  Future<String> getDateAndTime() {
-    return Future.delayed(
-      const Duration(seconds: 1),
-      () => DateTime.now().toIso8601String(),
-    ).then((value) {
-      dateAndTime = value;
-      return value;
-    });
-  }
+final color = colors.getRandomElement();
+
+extension RandomElement<T> on Iterable<T> {
+  T getRandomElement() => elementAt(
+        Random().nextInt(length),
+      );
 }

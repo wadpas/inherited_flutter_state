@@ -1,4 +1,4 @@
-# inherited_widget_flutter
+# Inherited Flutter State
 
 A new Flutter project.
 
