@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' show Random;
 
 void main() {
   runApp(
@@ -16,16 +15,36 @@ void main() {
   );
 }
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
-
-  @override
-  State<HomeView> createState() => _HomeViewState();
+class SliderData extends ChangeNotifier {
+  double _value = 0.0;
+  double get value => _value;
+  set value(double newValue) {
+    if (newValue != value) {
+      _value = newValue;
+      notifyListeners();
+    }
+  }
 }
 
-class _HomeViewState extends State<HomeView> {
-  var color1 = Colors.yellow;
-  var color2 = Colors.blue;
+final sliderData = SliderData();
+
+class SliderInheritedNotifier extends InheritedNotifier<SliderData> {
+  const SliderInheritedNotifier({
+    Key? super.key,
+    required super.notifier,
+    required super.child,
+  });
+
+  static double of(BuildContext context) =>
+      context
+          .dependOnInheritedWidgetOfExactType<SliderInheritedNotifier>()
+          ?.notifier
+          ?.value ??
+      0;
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,124 +52,47 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         title: const Text('Inherited Model'),
       ),
-      body: AvailableColorsWidget(
-        color1: color1,
-        color2: color2,
-        child: Column(
-          children: [
-            Row(
+      body: SliderInheritedNotifier(
+        notifier: sliderData,
+        child: Builder(
+          builder: (context) {
+            return Column(
               children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      color1 = colors.getRandomElement();
-                    });
+                Slider(
+                  value: SliderInheritedNotifier.of(context),
+                  onChanged: (value) {
+                    sliderData.value = value;
                   },
-                  child: const Text('Change color1'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      color2 = colors.getRandomElement();
-                    });
-                  },
-                  child: const Text('Change color2'),
+                Row(
+                  children: [
+                    Opacity(
+                      opacity: SliderInheritedNotifier.of(context),
+                      child: Container(
+                        color: Colors.yellow,
+                        height: 200,
+                      ),
+                    ),
+                    Opacity(
+                      opacity: SliderInheritedNotifier.of(context),
+                      child: Container(
+                        color: Colors.blue,
+                        height: 200,
+                      ),
+                    )
+                  ].expandEqually().toList(),
                 )
               ],
-            ),
-            const ColorWidget(color: AvailableColors.one),
-            const ColorWidget(color: AvailableColors.two),
-          ],
+            );
+          },
         ),
       ),
     );
   }
 }
 
-enum AvailableColors { one, two }
-
-class AvailableColorsWidget extends InheritedModel<AvailableColors> {
-  final MaterialColor color1;
-  final MaterialColor color2;
-
-  const AvailableColorsWidget({
-    Key? key,
-    required this.color1,
-    required this.color2,
-    required Widget child,
-  }) : super(key: key, child: child);
-
-  static AvailableColorsWidget of(
-      BuildContext context, AvailableColors aspect) {
-    return InheritedModel.inheritFrom<AvailableColorsWidget>(
-      context,
-      aspect: aspect,
-    )!;
-  }
-
-  @override
-  bool updateShouldNotify(covariant AvailableColorsWidget oldWidget) {
-    print('updateShouldNotify');
-    return color1 != oldWidget.color1 || color2 != oldWidget.color2;
-  }
-
-  @override
-  bool updateShouldNotifyDependent(
-    covariant AvailableColorsWidget oldWidget,
-    Set<AvailableColors> dependencies,
-  ) {
-    print('updateShouldNotifyDependent');
-    if (dependencies.contains(AvailableColors.one) &&
-        color1 != oldWidget.color1) {
-      return true;
-    }
-    if (dependencies.contains(AvailableColors.two) &&
-        color2 != oldWidget.color2) {
-      return true;
-    }
-    return false;
-  }
-}
-
-class ColorWidget extends StatelessWidget {
-  final AvailableColors color;
-
-  const ColorWidget({super.key, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    switch (color) {
-      case AvailableColors.one:
-        print('Color1 set');
-        break;
-      case AvailableColors.two:
-        print('Color2 set');
-        break;
-    }
-
-    final provider = AvailableColorsWidget.of(context, color);
-
-    return Container(
-      height: 100,
-      color: color == AvailableColors.one ? provider.color1 : provider.color2,
-    );
-  }
-}
-
-final colors = [
-  Colors.amber,
-  Colors.blue,
-  Colors.red,
-  Colors.brown,
-  Colors.indigo,
-  Colors.pink,
-  Colors.lime
-];
-
-final color = colors.getRandomElement();
-
-extension RandomElement<T> on Iterable<T> {
-  T getRandomElement() => elementAt(
-        Random().nextInt(length),
+extension ExpandEqually on Iterable<Widget> {
+  Iterable<Widget> expandEqually() => map(
+        (w) => Expanded(child: w),
       );
 }
