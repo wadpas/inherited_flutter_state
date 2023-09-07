@@ -24,15 +24,43 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  var color1 = Colors.yellow;
+  var color2 = Colors.blue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Inherited Model'),
       ),
-      body: SizedBox.expand(
-        child: Container(
-          color: Theme.of(context).colorScheme.primary,
+      body: AvailableColorsWidget(
+        color1: color1,
+        color2: color2,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      color1 = colors.getRandomElement();
+                    });
+                  },
+                  child: const Text('Change color1'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      color2 = colors.getRandomElement();
+                    });
+                  },
+                  child: const Text('Change color2'),
+                )
+              ],
+            ),
+            const ColorWidget(color: AvailableColors.one),
+            const ColorWidget(color: AvailableColors.two),
+          ],
         ),
       ),
     );
@@ -42,8 +70,8 @@ class _HomeViewState extends State<HomeView> {
 enum AvailableColors { one, two }
 
 class AvailableColorsWidget extends InheritedModel<AvailableColors> {
-  final AvailableColors color1;
-  final AvailableColors color2;
+  final MaterialColor color1;
+  final MaterialColor color2;
 
   const AvailableColorsWidget({
     Key? key,
@@ -62,15 +90,50 @@ class AvailableColorsWidget extends InheritedModel<AvailableColors> {
 
   @override
   bool updateShouldNotify(covariant AvailableColorsWidget oldWidget) {
+    print('updateShouldNotify');
     return color1 != oldWidget.color1 || color2 != oldWidget.color2;
   }
 
   @override
   bool updateShouldNotifyDependent(
-      covariant InheritedModel<AvailableColors> oldWidget,
-      Set<AvailableColors> dependencies) {
-    // TODO: implement updateShouldNotifyDependent
-    throw UnimplementedError();
+    covariant AvailableColorsWidget oldWidget,
+    Set<AvailableColors> dependencies,
+  ) {
+    print('updateShouldNotifyDependent');
+    if (dependencies.contains(AvailableColors.one) &&
+        color1 != oldWidget.color1) {
+      return true;
+    }
+    if (dependencies.contains(AvailableColors.two) &&
+        color2 != oldWidget.color2) {
+      return true;
+    }
+    return false;
+  }
+}
+
+class ColorWidget extends StatelessWidget {
+  final AvailableColors color;
+
+  const ColorWidget({super.key, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (color) {
+      case AvailableColors.one:
+        print('Color1 set');
+        break;
+      case AvailableColors.two:
+        print('Color2 set');
+        break;
+    }
+
+    final provider = AvailableColorsWidget.of(context, color);
+
+    return Container(
+      height: 100,
+      color: color == AvailableColors.one ? provider.color1 : provider.color2,
+    );
   }
 }
 
