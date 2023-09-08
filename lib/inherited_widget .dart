@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      title: 'Inherited Widget',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightBlue,
-        ),
-        useMaterial3: true,
-      ),
-      home: ApiProvider(
-        api: Api(),
-        child: const HomeView(),
-      ),
-    ),
-  );
+class WidgetInherited extends StatelessWidget {
+  const WidgetInherited({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ApiProvider(
+      api: Api(),
+      child: const HomePage(),
+    );
+  }
 }
 
 class ApiProvider extends InheritedWidget {
@@ -40,14 +34,14 @@ class ApiProvider extends InheritedWidget {
   }
 }
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomePageState extends State<HomePage> {
   ValueKey _textKey = const ValueKey<String?>(null);
 
   @override

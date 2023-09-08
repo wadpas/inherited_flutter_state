@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:math' show Random;
 
-void main() {
-  runApp(
-    MaterialApp(
-      title: 'Inherited Widget',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
-        useMaterial3: true,
-      ),
-      home: const HomeView(),
-    ),
-  );
-}
-
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class ModelInherited extends StatefulWidget {
+  const ModelInherited({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<ModelInherited> createState() => _ModelInheritedState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ModelInheritedState extends State<ModelInherited> {
   var color1 = Colors.yellow;
   var color2 = Colors.blue;
 

@@ -1,98 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:inherited_widget_flutter/inherited_model.dart';
+import 'package:inherited_widget_flutter/inherited_notifier.dart';
+import 'package:inherited_widget_flutter/inherited_widget%20.dart';
 
 void main() {
   runApp(
     MaterialApp(
-      title: 'Inherited Widget',
+      title: 'Inherited Pattern',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
         ),
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      home: const HomePage(),
+      routes: {
+        '/inherited-model': (context) => const ModelInherited(),
+        '/inherited-notifier': (context) => const NotifierInherited(),
+        '/inherited-widget': (context) => const WidgetInherited(),
+      },
     ),
   );
 }
 
-class SliderData extends ChangeNotifier {
-  double _value = 0.0;
-  double get value => _value;
-  set value(double newValue) {
-    if (newValue != value) {
-      _value = newValue;
-      notifyListeners();
-    }
-  }
-}
-
-final sliderData = SliderData();
-
-class SliderInheritedNotifier extends InheritedNotifier<SliderData> {
-  const SliderInheritedNotifier({
-    Key? super.key,
-    required super.notifier,
-    required super.child,
-  });
-
-  static double of(BuildContext context) =>
-      context
-          .dependOnInheritedWidgetOfExactType<SliderInheritedNotifier>()
-          ?.notifier
-          ?.value ??
-      0;
-}
-
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inherited Model'),
-      ),
-      body: SliderInheritedNotifier(
-        notifier: sliderData,
-        child: Builder(
-          builder: (context) {
-            return Column(
-              children: [
-                Slider(
-                  value: SliderInheritedNotifier.of(context),
-                  onChanged: (value) {
-                    sliderData.value = value;
-                  },
-                ),
-                Row(
-                  children: [
-                    Opacity(
-                      opacity: SliderInheritedNotifier.of(context),
-                      child: Container(
-                        color: Colors.yellow,
-                        height: 200,
-                      ),
-                    ),
-                    Opacity(
-                      opacity: SliderInheritedNotifier.of(context),
-                      child: Container(
-                        color: Colors.blue,
-                        height: 200,
-                      ),
-                    )
-                  ].expandEqually().toList(),
-                )
-              ],
-            );
-          },
-        ),
+      appBar: AppBar(title: const Text('Inherited Pattern')),
+      body: Column(
+        children: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/inherited-model');
+            },
+            child: const Text('Inherited Model'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/inherited-notifier');
+            },
+            child: const Text('Inherited Notifier'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/inherited-widget');
+            },
+            child: const Text('Inherited Widget'),
+          ),
+        ],
       ),
     );
   }
-}
-
-extension ExpandEqually on Iterable<Widget> {
-  Iterable<Widget> expandEqually() => map(
-        (w) => Expanded(child: w),
-      );
 }
