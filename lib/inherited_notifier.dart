@@ -43,7 +43,7 @@ class NotifierInherited extends StatelessWidget {
           builder: (context) {
             return Column(
               children: [
-                Slider(
+                Slider( 
                   value: SliderInheritedNotifier.of(context),
                   onChanged: (value) {
                     sliderData.value = value;

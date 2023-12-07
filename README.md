@@ -1,6 +1,8 @@
-# Inherited Flutter State
+# Inherited State
 
-A new Flutter project.
+Features:
+
+- InheritedModel
 
 ## Getting Started
 

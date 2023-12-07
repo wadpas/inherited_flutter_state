@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:inherited_widget_flutter/inherited_model.dart';
-import 'package:inherited_widget_flutter/inherited_notifier.dart';
-import 'package:inherited_widget_flutter/inherited_widget%20.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:inherited_state_flutter/colors_inherited_model/colors_widget.dart';
+import 'package:inherited_state_flutter/inherited_notifier.dart';
+import 'package:inherited_state_flutter/inherited_widget%20.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      title: 'Inherited Pattern',
-      theme: ThemeData(
+    const MyApp(),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Inherited State',
+      theme: ThemeData().copyWith(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+          seedColor: Colors.orange,
         ),
-        useMaterial3: true,
+        textTheme: GoogleFonts.aBeeZeeTextTheme(),
       ),
       home: const HomePage(),
       routes: {
-        '/inherited-model': (context) => const ModelInherited(),
         '/inherited-notifier': (context) => const NotifierInherited(),
         '/inherited-widget': (context) => const WidgetInherited(),
       },
-    ),
-  );
+    );
+  }
 }
 
 class HomePage extends StatelessWidget {
@@ -29,27 +38,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Inherited Pattern')),
+      appBar: AppBar(
+        title: const Text('Inherited State'),
+      ),
       body: Column(
         children: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/inherited-model');
-            },
-            child: const Text('Inherited Model'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/inherited-notifier');
-            },
-            child: const Text('Inherited Notifier'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/inherited-widget');
-            },
-            child: const Text('Inherited Widget'),
-          ),
+          ColorsWidget(),
         ],
       ),
     );
