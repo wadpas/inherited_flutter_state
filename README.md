@@ -3,6 +3,7 @@
 Features:
 
 - InheritedModel
+- InheritedWidget
 
 ## Getting Started
 

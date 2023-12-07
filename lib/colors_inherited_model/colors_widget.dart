@@ -30,9 +30,11 @@ class _ColorsWidgetState extends State<ColorsWidget> {
           ),
           ColorWidget(
             colorNumber: AvailableColors.two,
-            setColor: () => setState(() {
-              color2 = colors.getRandomElement();
-            }),
+            setColor: () => setState(
+              () {
+                color2 = colors.getRandomElement();
+              },
+            ),
           ),
         ],
       ),

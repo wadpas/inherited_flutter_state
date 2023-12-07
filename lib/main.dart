@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inherited_state_flutter/colors_inherited_model/colors_widget.dart';
+import 'package:inherited_state_flutter/date_time_inherited_widget/api_provider.dart';
+import 'package:inherited_state_flutter/date_time_inherited_widget/date_time_widget.dart';
 import 'package:inherited_state_flutter/inherited_notifier.dart';
-import 'package:inherited_state_flutter/inherited_widget%20.dart';
+import 'package:inherited_state_flutter/date_time_inherited_widget/date_time_inherited.dart';
 
 void main() {
   runApp(
@@ -26,7 +28,6 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
       routes: {
         '/inherited-notifier': (context) => const NotifierInherited(),
-        '/inherited-widget': (context) => const WidgetInherited(),
       },
     );
   }
@@ -43,7 +44,15 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ColorsWidget(),
+          const Expanded(
+            child: ColorsWidget(),
+          ),
+          Expanded(
+            child: DateTimeInherited(
+              dateTimeApi: ApiProvider(),
+              child: const DateTimeWidget(),
+            ),
+          ),
         ],
       ),
     );

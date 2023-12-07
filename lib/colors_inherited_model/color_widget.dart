@@ -23,11 +23,10 @@ class ColorWidget extends StatelessWidget {
         color: colorNumber == AvailableColors.one
             ? provider.color1
             : provider.color2,
-        child: Center(
+        child: const Center(
           child: Text(
             'Tap me',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       ),
