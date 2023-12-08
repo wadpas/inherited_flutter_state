@@ -12,8 +12,8 @@ class ColorsWidget extends StatefulWidget {
 }
 
 class _ColorsWidgetState extends State<ColorsWidget> {
-  var color1 = Colors.yellow;
-  var color2 = Colors.blue;
+  var color1 = Colors.cyan;
+  var color2 = Colors.orange;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,9 @@ class _ColorsWidgetState extends State<ColorsWidget> {
       color1: color1,
       color2: color2,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text('InheritedModel'),
           ColorWidget(
             colorNumber: AvailableColors.one,
             setColor: () => setState(() {

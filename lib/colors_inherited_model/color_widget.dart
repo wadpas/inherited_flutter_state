@@ -15,18 +15,19 @@ class ColorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = AvailableColorsWidget.of(context, colorNumber);
 
-    return GestureDetector(
-      onTap: setColor,
-      child: Container(
-        width: double.infinity,
-        height: 100,
-        color: colorNumber == AvailableColors.one
-            ? provider.color1
-            : provider.color2,
-        child: const Center(
-          child: Text(
-            'Tap me',
-            textAlign: TextAlign.center,
+    return Expanded(
+      child: GestureDetector(
+        onTap: setColor,
+        child: Container(
+          width: double.infinity,
+          color: colorNumber == AvailableColors.one
+              ? provider.color1
+              : provider.color2,
+          child: const Center(
+            child: Text(
+              'Tap me',
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),

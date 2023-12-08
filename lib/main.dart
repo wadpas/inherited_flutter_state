@@ -42,18 +42,26 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Inherited State'),
       ),
-      body: Column(
-        children: [
-          const Expanded(
-            child: ColorsWidget(),
-          ),
-          Expanded(
-            child: DateTimeInherited(
-              dateTimeApi: ApiProvider(),
-              child: const DateTimeWidget(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            const Expanded(
+              child: ColorsWidget(),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Expanded(
+              child: DateTimeInherited(
+                dateTimeApi: ApiProvider(),
+                child: const DateTimeWidget(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Expanded(
+              child: NotifierInherited(),
+            )
+          ],
+        ),
       ),
     );
   }

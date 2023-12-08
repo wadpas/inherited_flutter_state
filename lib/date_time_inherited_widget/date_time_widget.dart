@@ -24,21 +24,30 @@ class _DatePageState extends State<DateTimeWidget> {
         });
       },
       child: SizedBox.expand(
-        child: Container(
-          color: Colors.amberAccent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Current date & time'),
-              Text(
-                dateTimeApi.dateTime == null
-                    ? "Tap screen"
-                    : DateFormat("dd.MM.yyyy hh:mm:ss").format(
-                        DateTime.parse(dateTimeApi.dateTime!),
-                      ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('InheritedWidget'),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                color: Colors.amberAccent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Current date & time'),
+                    Text(
+                      dateTimeApi.dateTime == null
+                          ? "Tap screen"
+                          : DateFormat("dd.MM.yyyy hh:mm:ss").format(
+                              DateTime.parse(dateTimeApi.dateTime!),
+                            ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
