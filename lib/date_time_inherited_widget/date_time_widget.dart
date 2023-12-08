@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:inherited_state_flutter/date_time_inherited_widget/date_time_inherited.dart';
+import 'package:inherited_flutter_state/date_time_inherited_widget/date_time_inherited.dart';
 
 class DateTimeWidget extends StatefulWidget {
   const DateTimeWidget({super.key});
@@ -23,7 +23,8 @@ class _DatePageState extends State<DateTimeWidget> {
           _textKey = ValueKey(dateTime);
         });
       },
-      child: SizedBox.expand(
+      child: Container(
+        margin: const EdgeInsets.only(top: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

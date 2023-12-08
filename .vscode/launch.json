@@ -5,18 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "inherited_state_flutter",
+      "name": "inherited_flutter_state",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "inherited_state_flutter (profile mode)",
+      "name": "inherited_flutter_state (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "inherited_state_flutter (release mode)",
+      "name": "inherited_flutter_state (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inherited_state_flutter/colors_inherited_model/available_colors_widget.dart';
+import 'package:inherited_flutter_state/colors_inherited_model/available_colors_widget.dart';
 
 class ColorWidget extends StatelessWidget {
   final AvailableColors colorNumber;

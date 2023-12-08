@@ -1,4 +1,4 @@
-package com.example.inherited_state_flutter
+package com.example.inherited_flutter_state
 
 import io.flutter.embedding.android.FlutterActivity
 

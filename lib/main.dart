@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:inherited_state_flutter/colors_inherited_model/colors_widget.dart';
-import 'package:inherited_state_flutter/date_time_inherited_widget/api_provider.dart';
-import 'package:inherited_state_flutter/date_time_inherited_widget/date_time_widget.dart';
-import 'package:inherited_state_flutter/inherited_notifier.dart';
-import 'package:inherited_state_flutter/date_time_inherited_widget/date_time_inherited.dart';
+import 'package:inherited_flutter_state/colors_inherited_model/colors_widget.dart';
+import 'package:inherited_flutter_state/date_time_inherited_widget/api_provider.dart';
+import 'package:inherited_flutter_state/date_time_inherited_widget/date_time_widget.dart';
+import 'package:inherited_flutter_state/opacity_inherited_notifier/opacity_widget.dart';
+import 'package:inherited_flutter_state/date_time_inherited_widget/date_time_inherited.dart';
 
 void main() {
   runApp(
@@ -26,9 +26,6 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.aBeeZeeTextTheme(),
       ),
       home: const HomePage(),
-      routes: {
-        '/inherited-notifier': (context) => const NotifierInherited(),
-      },
     );
   }
 }
@@ -46,23 +43,21 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const Expanded(
-              child: ColorsWidget(),
+            const ColorsWidget(),
+            DateTimeInherited(
+              dateTimeApi: ApiProvider(),
+              child: const DateTimeWidget(),
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: DateTimeInherited(
-                dateTimeApi: ApiProvider(),
-                child: const DateTimeWidget(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Expanded(
-              child: NotifierInherited(),
-            )
-          ],
+            const OpacityWidget()
+          ].expandEqually().toList(),
         ),
       ),
     );
   }
+}
+
+extension ExpandEqually on Iterable<Widget> {
+  Iterable<Widget> expandEqually() => map(
+        (w) => Expanded(child: w),
+      );
 }

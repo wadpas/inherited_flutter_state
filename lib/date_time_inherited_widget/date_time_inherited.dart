@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inherited_state_flutter/date_time_inherited_widget/api_provider.dart';
+import 'package:inherited_flutter_state/date_time_inherited_widget/api_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class DateTimeInherited extends InheritedWidget {

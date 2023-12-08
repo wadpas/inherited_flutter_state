@@ -4,6 +4,7 @@ Features:
 
 - InheritedModel
 - InheritedWidget
+- InheritedNotifier
 
 ## Getting Started
 
